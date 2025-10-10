@@ -1,0 +1,45 @@
+{
+  "build": {
+    "beforeDevCommand": "cd api && uvicorn main:app --port 8001",
+    "beforeBuildCommand": "",
+    "devPath": "http://localhost:8001",
+    "distDir": "../static"
+  },
+  "package": {
+    "productName": "LocalDocs AI",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.localdocs.ai",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    },
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "title": "LocalDocs AI",
+        "width": 900,
+        "height": 700,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ]
+  }
+}
