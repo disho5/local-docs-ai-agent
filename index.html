@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>LocalDocs AI</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 20px auto; padding: 0 20px; }
+        #chat { height: 400px; border: 1px solid #ccc; padding: 10px; overflow-y: auto; margin-bottom: 10px; }
+        .message { margin-bottom: 10px; }
+        .user { color: blue; }
+        .assistant { color: green; }
+        input, button { padding: 8px; margin: 5px; }
+        #file-upload { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>LocalDocs AI</h1>
+    <p>Upload documents (.pdf, .txt, .md),then ask questions!</p>
+
+    <div id="file-upload">
+        <input type="file" id="fileInput" accept=".pdf,.txt,.md">
+        <button onclick="uploadFile()">Upload document</button>
+        <div id="uploadStatus"></div>
+    </div>
+
+    <div id="chat"></div>
+    <input type="text" id="messageInput" placeholder="Enter your question..." onkeypress="handleKeyPress(event)">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        const chatId = "default_chat"; //You can make a choice of chat
+        const chatBox = document.getElementById("chat");
+
+        function appendMessage(role, text) {
+            const div = document.createElement("div");
+            div.className = `message ${role}`;
+            div.innerHTML = `<strong>${role === 'user' ? 'Вы' : 'AI'}:</strong> ${text}`;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function uploadFile() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const status = document.getElementById("uploadStatus");
+            status.textContent = "Loading...";
+
+            try {
+                const res = await fetch("/upload", { method: "POST", body: formData });
+                const data = await res.json();
+                status.textContent = data.message;
+                fileInput.value = ""; // reset
+            } catch (e) {
+                status.textContent = "Error: " + e.message;
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById("messageInput");
+            const message = input.value.trim();
+            if (!message) return;
+
+            appendMessage("user", message);
+            input.value = "";
+
+            try {
+                const res = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `chat_id=${encodeURIComponent(chatId)}&message=${encodeURIComponent(message)}`
+                });
+                const data = await res.json();
+                appendMessage("assistant", data.response);
+            } catch (e) {
+                appendMessage("assistant", "Error: " + e.message);
+            }
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === "Enter") sendMessage();
+        }
+
+        // Load history at startup
+        window.onload = async () => {
+            try {
+                const res = await fetch(`/history/${chatId}`);
+                const data = await res.json();
+                data.history.forEach(msg => appendMessage(msg.role, msg.content));
+            } catch (e) {
+                console.log("No chat history");
+            }
+        };
+    </script>
+</body>
+</html>
