@@ -11,6 +11,9 @@
 ![](https://img.shields.io/badge/Topic-Github-lighred)
 ![](https://img.shields.io/website?url=https%3A%2F%2Fgithub.com%2Fmscbuild)
 
+<img width="1200" height="494" alt="ARTICLE" src="https://github.com/user-attachments/assets/36affcb3-175a-4f1e-b98d-a5533181ed08" />
+
+
 # 💡 The gist of the idea
 
 Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or personal files) and receive a local AI assistant that:
