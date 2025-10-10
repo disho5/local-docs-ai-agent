@@ -87,3 +87,17 @@ localdocs/
 ├── rag_engine.py
 ├── requirements.txt
 └── docs/               # put the PDF here
+
+**Install:**
+
+~~bash
+pip install -r requirements.txt
+~~
+
+**And make sure Ollama is running and the model is loaded:**
+
+~~bash
+ollama pull phi3  # или mistral, llama3
+~~
+
+
