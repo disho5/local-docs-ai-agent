@@ -52,6 +52,8 @@ Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or per
 
   # 🗺️ 1. Project Architecture (LocalDocs AI)
 
+  ~~~bash
+
   ┌───────────────────────────────────────────────────────┐
 │                  LocalDocs AI (Desktop App)           │
 └───────────────────────────────────────────────────────┘
@@ -68,6 +70,7 @@ Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or per
                     │  Storage      │   │  Database     │
                     │  (./docs/)    │   │  (ChromaDB)   │
                     └───────────────┘   └───────────────┘
+                    ~~~
 
   **🔁 Data flow:**
 
@@ -80,13 +83,14 @@ Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or per
 → a response is returned
 
 # 📁 Project structure
-
+~~~bash
 localdocs/
 ├── main.py
 ├── pdf_parser.py
 ├── rag_engine.py
 ├── requirements.txt
 └── docs/               # put the PDF here
+~~~
 
 **Install:**
 
