@@ -136,7 +136,7 @@ pip install -r requirements.txt
 **And make sure Ollama is running and the model is loaded:**
 
 ~~~bash
-ollama pull phi3  # или mistral, llama3
+ollama pull phi3  # mistral, llama3
 ~~~
 
 # ▶️ How to launch an MVP
