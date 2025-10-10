@@ -152,3 +152,15 @@ uvicorn main:app --reload --port 8000
 - The vector database is on your disk `(./chroma_db/)`
 - Requests to LLM are processed through Ollama on your machine
 - **Not a single byte is lost to the internet**
+
+# 🤝 Support the project
+
+This project is open source. If you find it useful:
+
+- ⭐ Star it on GitHub
+- 💬 Report bugs in Issues
+- 💰 Support the developer through GitHub Sponsors (coming soon)
+
+# 📜 License
+
+License – free to use for personal and commercial purposes.
