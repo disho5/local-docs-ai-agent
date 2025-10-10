@@ -11,12 +11,22 @@ Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or per
 - Works completely offline on their computer (Mac, Windows, or Linux).
 - No data is transmitted online—maximum privacy.
 
+ # ✨ Opportunities
+
+ - 📄 Document upload: **PDF, TXT, Markdown**
+- 💬 AI-powered chat based on your documents (RAG)
+- 🕵️‍♂️ Complete privacy – everything runs on your computer
+- 🧠 Uses local LLM via **Ollama** (phi3, Mistral, Llama 3, etc.)
+- 📜 Chat history is saved
+- 🌐 Simple web interface (or desktop app)
+  
   # 🔧 Technologies
 
 - **Language:** Python (base) + Electron or Tauri (for GUI)
-- **LLM:** Llama.cpp or Ollama — for running models locally
+- **LLM:** Ollama (phi3, Mistral, Llama 3)
 - **Embeddings + RAG:** ChromaDB or FAISS
 - **Frontend:** React + Vite (if using Tauri) or pure HTML/CSS for simplicity
+- **Documents:** PyPDF2, built-in parsers
 
   # 💰 Monetization
 
@@ -103,4 +113,42 @@ pip install -r requirements.txt
 ollama pull phi3  # или mistral, llama3
 ~~~
 
+# ▶️ How to launch an MVP
 
+- Create a docs/ folder and place any PDF there (name it sample.pdf).
+- Launch Ollama: ollama serve (it usually starts automatically).
+- Run:
+
+~~~bash
+python main.py add docs/sample.pdf
+python main.py ask "What is this document about?"
+~~~
+
+# Installation
+
+```bash
+git clone https://github.com/mscbuild/LocalDocsAI.git
+cd LocalDocsAI
+pip install -r requirements.txt
+
+# Launching the web version
+
+~~~bash
+cd api
+uvicorn main:app --reload --port 8000
+~~~
+
+**Open in your browser: http://localhost:8000**
+
+**Usage**
+
+- Upload a PDF/TXT/MD file
+- Ask questions: "What is this document about?", "Find the contract date," etc.
+- Get answers from AI trained on your data
+
+# 🔒 Privacy
+
+- All documents are stored locally `(./docs/)`
+- The vector database is on your disk `(./chroma_db/)`
+- Requests to LLM are processed through Ollama on your machine
+- **Not a single byte is lost to the internet**
