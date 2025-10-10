@@ -90,14 +90,14 @@ localdocs/
 
 **Install:**
 
-~~bash
+~~~bash
 pip install -r requirements.txt
-~~
+~~~
 
 **And make sure Ollama is running and the model is loaded:**
 
-~~bash
+~~~bash
 ollama pull phi3  # или mistral, llama3
-~~
+~~~
 
 
