@@ -1,35 +1,52 @@
+# api/main.py
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from typing import List
 import os
-import sys
-from pdf_parser import extract_text_from_pdf
-from rag_engine import RAGEngine
+import shutil
+from core.rag_engine import RAGEngine
 
-def main():
-    if len(sys.argv) < 3:
-        print("Usage:")
-        print("  python main.py add <pdf_file>")
-        print("  python main.py ask <question>")
-        return
+app = FastAPI(title="LocalDocs AI", description="A private AI assistant for your documents")
 
-    command = sys.argv[1]
-    engine = RAGEngine()
+# Engine initialization
+engine = RAGEngine()
 
-    if command == "add":
-        pdf_path = sys.argv[2]
-        if not os.path.exists(pdf_path):
-            print("File not found!")
-            return
-        text = extract_text_from_pdf(pdf_path)
-        doc_id = os.path.basename(pdf_path).replace(".pdf", "")
-        engine.add_document(doc_id, text)
-        print(f"✅ Document '{doc_id}' added!")
+# Folders
+UPLOAD_DIR = "./docs"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-    elif command == "ask":
-        question = " ".join(sys.argv[2:])
-        try:
-            answer = engine.query(question)
-            print(f"🤖 Answer: {answer}")
-        except Exception as e:
-            print(f"❌ Error: {e}")
+# Distribution of static
+app.mount("/static", StaticFiles(directory="../static"), name="static")
 
-if __name__ == "__main__":
-    main()
+@app.get("/")
+async def read_root():
+    return FileResponse("../static/index.html")
+
+@app.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    if not file.filename.endswith((".pdf", ".txt", ".md")):
+        raise HTTPException(status_code=400, detail="Only supported .pdf, .txt, .md")
+    
+    file_path = os.path.join(UPLOAD_DIR, file.filename)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    
+    try:
+        doc_id = engine.add_document(file_path)
+        return {"message": f"Документ '{doc_id}' successfully added!", "doc_id": doc_id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/chat")
+async def chat(chat_id: str = Form(...), message: str = Form(...)):
+    try:
+        response = engine.query(chat_id, message)
+        return {"response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/history/{chat_id}")
+async def get_history(chat_id: str):
+    history = engine.chat_history.load_history(chat_id)
+    return {"history": history}
