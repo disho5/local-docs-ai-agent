@@ -28,6 +28,13 @@ Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or per
 - **Frontend:** React + Vite (if using Tauri) or pure HTML/CSS for simplicity
 - **Documents:** PyPDF2, built-in parsers
 
+  # 🔧 Requirements
+  
+- [Ollama](https://ollama.com/) (install and run)
+- Python 3.9+
+- pip
+  
+
   # 💰 Monetization
 
 - **Free version (open-source):**
@@ -93,12 +100,21 @@ Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or per
 
 # 📁 Project structure
 ~~~bash
-localdocs/
-├── main.py
-├── pdf_parser.py
-├── rag_engine.py
-├── requirements.txt
-└── docs/               # put the PDF here
+LocalDocs AI
+│
+├── core/
+│   ├── document_loader.py   ← support PDF, TXT, MD
+│   ├── rag_engine.py        ← RAG + chat history
+│   └── chat_history.py      ← history management
+│
+├── api/
+│   └── main.py              ← FastAPI server
+│
+├── static/                  ← simple HTML interface
+│   └── index.html
+│
+├── docs/                    ← user files
+└── chroma_db/               ← vector database
 ~~~
 
 **Install:**
