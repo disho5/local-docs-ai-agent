@@ -2,6 +2,15 @@
 
 **A private, local AI assistant for your documents—without sending data to the cloud**
 
+![](https://komarev.com/ghpvc/?username=mscbuild) 
+ ![](https://img.shields.io/github/license/mscbuild/LocalDocsAI) 
+ ![](https://img.shields.io/badge/PRs-Welcome-green)
+ ![](https://img.shields.io/github/languages/code-size/mscbuild/LocalDocsAI)
+![](https://img.shields.io/badge/code%20style-python-green)
+![](https://img.shields.io/github/stars/mscbuild)
+![](https://img.shields.io/badge/Topic-Github-lighred)
+![](https://img.shields.io/website?url=https%3A%2F%2Fgithub.com%2Fmscbuild)
+
 # 💡 The gist of the idea
 
 Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or personal files) and receive a local AI assistant that:
