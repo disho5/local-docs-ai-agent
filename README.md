@@ -70,8 +70,8 @@ Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or per
                     │  Storage      │   │  Database     │
                     │  (./docs/)    │   │  (ChromaDB)   │
                     └───────────────┘   └───────────────┘
-                    ~~~
-
+                  
+~~~
   **🔁 Data flow:**
 
 - The user adds a PDF → saves it to ./docs/.
