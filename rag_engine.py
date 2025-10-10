@@ -1,16 +1,17 @@
+# core/rag_engine.py
 import chromadb
 from chromadb.utils import embedding_functions
 import requests
-import os
+from typing import List, Dict
+from .document_loader import load_document
+from .chat_history import ChatHistory
 
-#Using Ollama for embeddings and generation
 OLLAMA_URL = "http://localhost:11434/api"
-MODEL_NAME = "phi3"  # или "mistral", "llama3"
+MODEL_NAME = "phi3"
 
 class RAGEngine:
-    def __init__(self, persist_directory="./chroma_db"):
+    def __init__(self, persist_directory="./chroma_db", history_dir="./chat_history"):
         self.client = chromadb.PersistentClient(path=persist_directory)
-        # Using Ollama for embeddings
         self.embedding_func = embedding_functions.OllamaEmbeddingFunction(
             model_name=MODEL_NAME,
             url=f"{OLLAMA_URL}/embed"
@@ -19,37 +20,42 @@ class RAGEngine:
             name="documents",
             embedding_function=self.embedding_func
         )
+        self.chat_history = ChatHistory(history_dir)
 
-    def add_document(self, doc_id: str, text: str):
-        """Adds a document to a vector database."""
-        self.collection.add(
-            ids=[doc_id],
-            documents=[text]
-        )
-        print(f"document {doc_id} added to the database.")
+    def add_document(self, file_path: str):
+        """Adds a document of any supported format."""
+        text = load_document(file_path)
+        doc_id = os.path.splitext(os.path.basename(file_path))[0]
+        self.collection.add(ids=[doc_id], documents=[text])
+        return doc_id
 
-    def query(self, question: str, n_results=3) -> str:
-        """Makes a RAG request to LLM"""
-        # Find relevant fragments
-        results = self.collection.query(
-            query_texts=[question],
-            n_results=n_results
-        )
-        
-        context = "\n\n".join(results['documents'][0])
-        
-        # Generate a prompt
-        prompt = f"""Use only the following context to answer the question.
-If there is no answer in context, say, "I don't know."
+    def query(self, chat_id: str, question: str) -> str:
+        # We save the question in history
+        self.chat_history.save_message(chat_id, "user", question)
 
-Context:
+        # Getting context from documents
+        results = self.collection.query(query_texts=[question], n_results=3)
+        context = "\n\n".join(results['documents'][0]) if results['documents'][0] else "Нет релевантных документов."
+
+        # Getting chat history (only the last 4 messages for context)
+        history = self.chat_history.load_history(chat_id)[-4:]
+        history_text = "\n".join([f"{msg['role']}: {msg['content']}" for msg in history])
+
+        # Forming a prompt with context and history
+        prompt = f"""You're a helpful assistant. Answer questions using context and chat history.
+
+Context from the documents:
 {context}
 
-Question: {question}
+Chat history:
+{history_text}
 
-Answer:"""
+New user question:
+{question}
 
-        # Send to Ollama
+Answer briefly and to the point:"""
+
+        # Request to Ollama
         response = requests.post(
             f"{OLLAMA_URL}/generate",
             json={
@@ -57,10 +63,14 @@ Answer:"""
                 "prompt": prompt,
                 "stream": False,
                 "options": {"temperature": 0.7}
-            }
+            },
+            timeout=120
         )
-        
+
         if response.status_code == 200:
-            return response.json()["response"].strip()
+            answer = response.json()["response"].strip()
+            self.chat_history.save_message(chat_id, "assistant", answer)
+            return answer
         else:
-            raise Exception(f"Error Ollama: {response.text}")
+            error = response.json().get("error", "Unknown error")
+            raise Exception(f"Ollama error: {error}")
