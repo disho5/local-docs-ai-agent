@@ -126,6 +126,7 @@ LocalDocs AI
 └── chroma_db/               ← vector database
 ~~~
 
+
 **Install:**
 
 ~~~bash
@@ -151,10 +152,11 @@ python main.py ask "What is this document about?"
 
 # Installation
 
-```bash
+~~~bash
 git clone https://github.com/mscbuild/LocalDocsAI.git
 cd LocalDocsAI
 pip install -r requirements.txt
+~~~
 
 # Launching the web version
 
