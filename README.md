@@ -1,11 +1,11 @@
-# 🌟  LocalDocsAI
+# 🌟  LocalDocsAI assistant
 
 **A private, local AI assistant for your documents—without sending data to the cloud**
 
 ![](https://komarev.com/ghpvc/?username=mscbuild) 
- ![](https://img.shields.io/github/license/mscbuild/LocalDocsAI) 
+ ![](https://img.shields.io/github/license/mscbuild/local-docs-ai-agent) 
  ![](https://img.shields.io/badge/PRs-Welcome-green)
- ![](https://img.shields.io/github/languages/code-size/mscbuild/LocalDocsAI)
+ ![](https://img.shields.io/github/languages/code-size/mscbuild/local-docs-ai-agent)
 ![](https://img.shields.io/badge/code%20style-python-green)
 ![](https://img.shields.io/github/stars/mscbuild)
 ![](https://img.shields.io/badge/Topic-Github-lighred)
@@ -156,8 +156,8 @@ python main.py ask "What is this document about?"
 # Installation
 
 ~~~bash
-git clone https://github.com/mscbuild/LocalDocsAI.git
-cd LocalDocsAI
+git clone https://github.com/mscbuild/local-docs-ai-agent.git
+cd local-docs-ai-agent
 pip install -r requirements.txt
 ~~~
 
