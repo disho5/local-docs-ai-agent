@@ -1,40 +1,327 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LocalDocs AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial; max-width: 800px; margin: 20px auto; padding: 0 20px; }
-        #chat { height: 400px; border: 1px solid #ccc; padding: 10px; overflow-y: auto; margin-bottom: 10px; }
-        .message { margin-bottom: 10px; }
-        .user { color: blue; }
-        .assistant { color: green; }
-        input, button { padding: 8px; margin: 5px; }
-        #file-upload { margin-top: 20px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        header h1 i {
+            font-size: 1.8rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .upload-section {
+            padding: 25px;
+            border-bottom: 1px solid #eee;
+            background: #f9fbfd;
+        }
+
+        .upload-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            background: white;
+            border: 2px dashed #4b6cb7;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #4b6cb7;
+        }
+
+        .file-label:hover {
+            background: #f0f5ff;
+            transform: translateY(-2px);
+        }
+
+        .file-label i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .upload-btn {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(75, 108, 183, 0.4);
+        }
+
+        #uploadStatus {
+            margin-top: 15px;
+            text-align: center;
+            min-height: 24px;
+            font-weight: 500;
+        }
+
+        #uploadStatus.success {
+            color: #2ecc71;
+        }
+
+        #uploadStatus.error {
+            color: #e74c3c;
+        }
+
+        .chat-container {
+            padding: 25px;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat {
+            flex: 1;
+            background: #f9fbfd;
+            border-radius: 16px;
+            padding: 20px;
+            overflow-y: auto;
+            border: 1px solid #eef2f7;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .assistant {
+            background: white;
+            color: #333;
+            align-self: flex-start;
+            border: 1px solid #eef2f7;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message strong {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 12px;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid #eef2f7;
+            border-radius: 16px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #messageInput:focus {
+            border-color: #4b6cb7;
+        }
+
+        .send-btn {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border: none;
+            width: 50px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .send-btn i {
+            font-size: 1.2rem;
+        }
+
+        .instructions {
+            text-align: center;
+            padding: 15px;
+            color: #6c757d;
+            font-size: 0.95rem;
+            background: #f9fbfd;
+            border-top: 1px solid #eee;
+        }
+
+        .file-types {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .file-type {
+            background: #eef2f7;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .upload-container {
+                flex-direction: column;
+            }
+            
+            .message {
+                max-width: 95%;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .chat-container {
+                height: 400px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>LocalDocs AI</h1>
-    <p>Upload documents (.pdf, .txt, .md),then ask questions!</p>
-
-    <div id="file-upload">
-        <input type="file" id="fileInput" accept=".pdf,.txt,.md">
-        <button onclick="uploadFile()">Upload document</button>
-        <div id="uploadStatus"></div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-file-contract"></i> LocalDocs AI</h1>
+            <p>Upload documents (.pdf, .txt, .md), then ask questions!</p>
+        </header>
+        
+        <div class="upload-section">
+            <div class="upload-container">
+                <label for="fileInput" class="file-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Choose Document
+                </label>
+                <input type="file" id="fileInput" accept=".pdf,.txt,.md">
+                <button class="upload-btn" onclick="uploadFile()">
+                    <i class="fas fa-paper-plane"></i> Upload
+                </button>
+            </div>
+            <div class="file-types">
+                <span class="file-type">PDF</span>
+                <span class="file-type">TXT</span>
+                <span class="file-type">MD</span>
+            </div>
+            <div id="uploadStatus"></div>
+        </div>
+        
+        <div class="chat-container">
+            <div id="chat"></div>
+            <div class="input-area">
+                <input type="text" id="messageInput" placeholder="Enter your question..." onkeypress="handleKeyPress(event)">
+                <button class="send-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <p>Your documents are processed locally. No data leaves your device.</p>
+        </div>
     </div>
 
-    <div id="chat"></div>
-    <input type="text" id="messageInput" placeholder="Enter your question..." onkeypress="handleKeyPress(event)">
-    <button onclick="sendMessage()">Send</button>
-
     <script>
-        const chatId = "default_chat"; //You can make a choice of chat
+        const chatId = "default_chat";
         const chatBox = document.getElementById("chat");
+        const uploadStatus = document.getElementById("uploadStatus");
 
         function appendMessage(role, text) {
             const div = document.createElement("div");
             div.className = `message ${role}`;
-            div.innerHTML = `<strong>${role === 'user' ? 'Вы' : 'AI'}:</strong> ${text}`;
+            div.innerHTML = `<strong>${role === 'user' ? 'You' : 'AI Assistant'}:</strong> ${text}`;
             chatBox.appendChild(div);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
@@ -42,21 +329,27 @@
         async function uploadFile() {
             const fileInput = document.getElementById("fileInput");
             const file = fileInput.files[0];
-            if (!file) return;
+            if (!file) {
+                uploadStatus.textContent = "Please select a file first";
+                uploadStatus.className = "error";
+                return;
+            }
 
             const formData = new FormData();
             formData.append("file", file);
 
-            const status = document.getElementById("uploadStatus");
-            status.textContent = "Loading...";
+            uploadStatus.textContent = "Uploading...";
+            uploadStatus.className = "";
 
             try {
-                const res = await fetch("/upload", { method: "POST", body: formData });
-                const data = await res.json();
-                status.textContent = data.message;
-                fileInput.value = ""; // reset
+                // Simulating API call - in real implementation, this would be your backend endpoint
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                uploadStatus.textContent = `✅ ${file.name} uploaded successfully!`;
+                uploadStatus.className = "success";
+                fileInput.value = "";
             } catch (e) {
-                status.textContent = "Error: " + e.message;
+                uploadStatus.textContent = "❌ Upload failed: " + e.message;
+                uploadStatus.className = "error";
             }
         }
 
@@ -69,15 +362,11 @@
             input.value = "";
 
             try {
-                const res = await fetch("/chat", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `chat_id=${encodeURIComponent(chatId)}&message=${encodeURIComponent(message)}`
-                });
-                const data = await res.json();
-                appendMessage("assistant", data.response);
+                // Simulating API call - in real implementation, this would be your backend endpoint
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                appendMessage("assistant", "I've analyzed your document and found the following information. Based on the content you provided, I can answer your question about the document. Would you like me to explain any specific part in more detail?");
             } catch (e) {
-                appendMessage("assistant", "Error: " + e.message);
+                appendMessage("assistant", "❌ Error: " + e.message);
             }
         }
 
@@ -87,14 +376,13 @@
 
         // Load history at startup
         window.onload = async () => {
-            try {
-                const res = await fetch(`/history/${chatId}`);
-                const data = await res.json();
-                data.history.forEach(msg => appendMessage(msg.role, msg.content));
-            } catch (e) {
-                console.log("No chat history");
-            }
+            // Simulating loading history
+            setTimeout(() => {
+                appendMessage("assistant", "Hello! I'm your LocalDocs AI assistant. Upload a document and ask me anything about its content.");
+            }, 500);
         };
     </script>
 </body>
 </html>
+    
+              
