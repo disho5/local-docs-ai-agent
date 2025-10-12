@@ -2,6 +2,7 @@
 
 **A private, local AI assistant for your documents—without sending data to the cloud**
 
+<a href="https://github.com/mscbuild"><img src="https://img.shields.io/badge/AI-Code%20Assist-EB9FDA"></a>
 ![](https://komarev.com/ghpvc/?username=mscbuild) 
  ![](https://img.shields.io/github/license/mscbuild/local-docs-ai-agent) 
  ![](https://img.shields.io/badge/PRs-Welcome-green)
