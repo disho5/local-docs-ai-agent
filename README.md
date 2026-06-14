@@ -11,6 +11,12 @@ Welcome to **local-docs-ai-agent**! This application helps you manage your docum
 - **Fast Processing:** Quickly generate summaries and insights.
 - **User-Friendly Interface:** Designed for ease of use.
 
+## 📊 EvalMonkey Benchmark Results (Claude Sonnet 4.5)
+
+[![EvalMonkey Reliability](https://img.shields.io/badge/Production%20Reliability-Score%3A41.0-orange)](https://github.com/Corbell-AI/evalmonkey)
+
+*This agent scored a Production Reliability of **41.0/100** when benchmarked on Claude Sonnet 4.5 across HotpotQA, TruthfulQA, and MMLU with adversarial chaos profiles (prompt injection & schema mutation) by [EvalMonkey](https://github.com/Corbell-AI/evalmonkey).*
+
 ## 📌 System Requirements
 
 Before you start, make sure your system meets the following requirements:
